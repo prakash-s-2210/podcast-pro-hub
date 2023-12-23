@@ -4,10 +4,13 @@ import Sidebar from "../../../../components/shared/Sidebar";
 import { fetchProjectById } from "../../../../lib/actions/project.actions";
 import ProjectNavbar from "../../../../components/shared/ProjectNavbar";
 import FileTable from "../../../../components/cards/FileTable";
+import UploadForm from "../../../../components/forms/UploadForm"
 import {
   uploadOptions,
   defaultUploadOptions,
 } from "../../../../constants/index";
+
+import { Button } from "../../../../components/ui/button";
 
 const Page = async ({ params }) => {
   const project = await fetchProjectById(params.id);
@@ -28,7 +31,10 @@ const Page = async ({ params }) => {
 
               <div className="pt-11 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {defaultUploadOptions.map((option) => (
-                  <div key={option.label} className="upload-shadow cursor-pointer p-6 border border-[#999] rounded-[22px] flex items-center gap-7">
+                  <div
+                    key={option.label}
+                    className="upload-shadow cursor-pointer p-6 border border-[#999] rounded-[22px] flex items-center gap-7"
+                  >
                     <Image
                       src={option.icon}
                       alt={option.label}
@@ -60,27 +66,33 @@ const Page = async ({ params }) => {
               <h1 className="text-[55px] font-bold text-primary">Upload</h1>
 
               <div className="pt-11 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                {uploadOptions.map((option) => (
-                  <div key={option.label} className="upload-shadow cursor-pointer p-6 border border-[#999] rounded-[22px] flex items-center gap-7">
-                    <Image
-                      src={option.icon}
-                      alt={option.label}
-                      width={64}
-                      height={64}
-                    />
+                {uploadOptions.map((option) => {
+                  let optionContent = (
+                    <div
+                      key={option.label}
+                      className="upload-shadow cursor-pointer p-6 border border-[#999] rounded-[22px] flex items-center gap-7"
+                    >
+                      <Image
+                        src={option.icon}
+                        alt={option.label}
+                        width={64}
+                        height={64}
+                      />
 
-                    <p className="text-[19px] leading-[23px] tracking-[0.137px] font-bold text-[#3C3C3C]">
-                      {option.label}
-                    </p>
-                  </div>
-                ))}
+                      <p className="text-[19px] leading-[23px] tracking-[0.137px] font-bold text-[#3C3C3C]">
+                        {option.label}
+                      </p>
+                    </div>
+                  );
+                  return <UploadForm key={option.label} children = {optionContent} /> ;
+                })}
               </div>
 
               <p className="text-[#999] text-[18px] text-center pt-10 pb-6">
                 or
               </p>
 
-              <div className="flex flex-col items-center border-[4px] border-dashed rounded-[20px] border-[#999]">
+              <div className="cursor-pointer flex flex-col items-center border-[4px] border-dashed rounded-[20px] border-[#999]">
                 <Image
                   src="/assets/icons/upload.svg"
                   alt="upload"
@@ -88,11 +100,18 @@ const Page = async ({ params }) => {
                   height={128}
                 />
 
-                <p className="text-[#49454F] text-[20px]">Select a file or drag and drop here (Podcast Media or Transcription Text)</p>
+                <p className="text-[#49454F] text-[20px]">
+                  Select a file or drag and drop here (Podcast Media or
+                  Transcription Text)
+                </p>
 
-                <p className="opacity-40 text-[16px]">MP4, MOV, MP3, WAV, PDF, DOCX or TXT file </p>
+                <p className="opacity-40 text-[16px]">
+                  MP4, MOV, MP3, WAV, PDF, DOCX or TXT file{" "}
+                </p>
 
-                <Button />
+                <Button className="bg-transparent my-8 px-10 py-6 border-2 border-primary rounded-3xl text-[26px] leading-[36px] font-medium text-primary hover:bg-transparent">
+                  Select File
+                </Button>
               </div>
             </>
           )}
