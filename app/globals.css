@@ -2,26 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+@layer base{
+  tr th{
+    @apply border-b border-b-[#999] text-[26px] font-bold leading-[33px] tracking-[0.19px] p-8 text-left text-[#3C3C3C];
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  tr td{
+    @apply border-b border-b-[#999] text-[26px] font-medium leading-[33px] tracking-[0.19px] p-8 text-left text-[#3C3C3C];
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+    
+  /* No Result */
+  .no-result {
+    @apply text-center !text-base-regular text-light-3;
+  }
+
+  .btn-primary{
+    @apply bg-primary hover:bg-primary hover:bg-opacity-80 !important;
+  }
+
+  /* Box Shadow  */
+  .home-shadow{
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.06),
+                0.75px 1.501px 3.752px 0px rgba(0, 0, 0, 0.06),
+                3.001px 6.003px 6.753px 0px rgba(0, 0, 0, 0.05),
+                6.753px 13.506px 9.004px 0px rgba(0, 0, 0, 0.03),
+                12.005px 24.01px 10.504px 0px rgba(0, 0, 0, 0.01),
+                18.758px 36.766px 12.005px 0px rgba(0, 0, 0, 0.00);
+  }
+  
+  .project-card-shadow{
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.06), 1.19px 2.379px 5.948px 0px rgba(0, 0, 0, 0.06), 4.758px 9.516px 10.706px 0px rgba(0, 0, 0, 0.05), 10.706px 21.412px 14.274px 0px rgba(0, 0, 0, 0.03), 19.032px 38.065px 16.653px 0px rgba(0, 0, 0, 0.01), 29.738px 58.287px 19.032px 0px rgba(0, 0, 0, 0.00);
+  }
+
+  .upload-shadow{
+    filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.06)) drop-shadow(1px 2px 5px rgba(0, 0, 0, 0.06)) drop-shadow(4px 8px 9px rgba(0, 0, 0, 0.05)) drop-shadow(9px 18px 12px rgba(0, 0, 0, 0.03)) drop-shadow(16px 32px 14px rgba(0, 0, 0, 0.01)) drop-shadow(25px 49px 16px rgba(0, 0, 0, 0.00));
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.06), 1px 2px 5px 0px rgba(0, 0, 0, 0.06), 4px 8px 9px 0px rgba(0, 0, 0, 0.05), 9px 18px 12px 0px rgba(0, 0, 0, 0.03), 16px 32px 14px 0px rgba(0, 0, 0, 0.01), 25px 49px 16px 0px rgba(0, 0, 0, 0.00);
+  }
+
+  /* Head Text */
+  .head-text {
+    @apply text-[72px] font-bold text-primary;
+  }
+
+  /* Community Card */
+  .community-card {
+    @apply w-full rounded-lg bg-dark-3 px-4 py-5 sm:w-96;
+  }
+
+  .leftsidebar {
+    @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-dark-2 pb-5 pt-28 max-md:hidden;
+  }
+
+  .leftsidebar_link {
+    @apply relative flex justify-start gap-4 rounded-lg p-4;
+  }
 }
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #09090a;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #5c5c7b;
+    border-radius: 50px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #7878a3;
+  }
+}
+
+/* Shadcn Component Styles */
+
+.no-focus {
+  @apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
+}
+
