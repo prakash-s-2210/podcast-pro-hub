@@ -310,16 +310,16 @@ const DisplayTab = ({ widgetConfigurationForm, projectId, onFileChange }) => {
                 )}
 
                 <div className="flex flex-col gap-2">
-                  <Button className="flex items-center gap-2 bg-primary hover:bg-primary rounded-lg px-6 py-3">
+                  <div className="flex items-center gap-2 bg-primary hover:bg-primary rounded-lg px-6 py-3">
                     <p className="text-white font-bold text-[16px]">Upload Image</p>
                     <Image
                       src="/assets/icons/upload-icon.svg"
                       alt="upload"
                       width={20}
                       height={20}
-                      className="object-contain rounded-full w-12 h-12"
+                      className="object-contain rounded-full w-5 h-5"
                     />
-                  </Button>
+                  </div>
 
                   <p className="text-[13px] text-[#646464]">Recommended Size: 48X48px</p>
                 </div>
