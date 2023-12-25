@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -20,6 +22,8 @@ const WidgetConfigurationForm = ({
   tab,
   widgetConfiguration,
 }) => {
+  const router = useRouter();
+
   const widgetConfigurationForm = useForm({
     resolver: zodResolver(widgetConfigurationValidation),
     defaultValues: {
@@ -83,8 +87,8 @@ const WidgetConfigurationForm = ({
         path: `/projects/${projectId}/widget-configuration?tab=general`,
       });
 
-      widgetConfigurationForm.reset();
-
+      router.push(`/projects/${projectId}/widget-configuration?tab=general`);
+      
       toast({
         title: toastMessage,
         duration: 2500,
