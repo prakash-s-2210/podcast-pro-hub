@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 
 import {
   FormDescription,
@@ -331,7 +330,7 @@ const DisplayTab = ({ widgetConfigurationForm, projectId, onFileChange }) => {
                 type="file"
                 accept="image/*"
                 className="h-[1px] invisible"
-                onChange={(e) => onFileChange(e, field.onChange)}
+                onChange={(e) => handleImage(e, field.onChange)}
               />
             </FormControl>
           </FormItem>
