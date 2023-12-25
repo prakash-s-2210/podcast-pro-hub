@@ -287,7 +287,7 @@ const DisplayTab = ({ widgetConfigurationForm, projectId, onFileChange }) => {
         name="botIcon"
         render={({ field }) => (
           <FormItem className="flex items-center gap-4">
-            <FormLabel className="flex flex-col gap-4">
+            <FormLabel className="flex flex-col gap-4 cursor-pointer">
               <p className="text-[20px] font-bold text-[#3C3C3C]">Bot Icon</p>
               <div className="flex items-center gap-5">
                 {field.value ? (
