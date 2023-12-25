@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Form } from "../ui/form";
+import { useToast } from "../ui/use-toast";
 
 import { widgetConfigurationValidation } from "../../lib/validations/projects";
 import { updateWidgetConfiguration } from "../../lib/actions/project.actions";
@@ -22,6 +23,7 @@ const WidgetConfigurationForm = ({
   tab,
   widgetConfiguration,
 }) => {
+  const {toast} = useToast();
   const router = useRouter();
 
   const widgetConfigurationForm = useForm({
@@ -86,13 +88,11 @@ const WidgetConfigurationForm = ({
         projectId: projectId,
         path: `/projects/${projectId}/widget-configuration?tab=general`,
       });
-
-      router.push(`/projects/${projectId}/widget-configuration?tab=general`);
-      
       toast({
         title: toastMessage,
         duration: 2500,
       });
+      router.push(`/projects/${projectId}/widget-configuration?tab=general`);
     } catch (error) {
       console.log(error.message);
     }
