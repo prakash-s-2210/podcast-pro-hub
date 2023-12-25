@@ -16,7 +16,6 @@ import { Button } from "../ui/button";
 import { signupValidation, loginValidation } from "../../lib/validations/auth";
 import {
   createUser,
-  fetchLoggedInUserId,
   fetchUserCredential,
   validateUserEmail,
 } from "../../lib/actions/user.actions";

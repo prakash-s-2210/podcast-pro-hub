@@ -9,12 +9,15 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 
-const Sidebar = ({ project }) => {
+const Sidebar = ({ id, title }) => {
   const pathname = usePathname();
 
   const sidebarLinks = [
-    { route: `/projects/${project._id}/upload`, label: "Projects" },
-    { route: `/projects/${project._id}/widget-configuration`, label: "Widget Configurations" },
+    { route: `/projects/${id}/upload`, label: "Projects" },
+    {
+      route: `/projects/${id}/widget-configuration?tab=general`,
+      label: "Widget Configurations",
+    },
     { route: "null", label: "Deployment" },
     { route: "null", label: "Pricing" },
   ];
@@ -41,7 +44,7 @@ const Sidebar = ({ project }) => {
         </Link>
 
         <p className="px-5 py-6 text-[18px] font-medium leading-[26px] text-[#49454F]">
-          {pathname.includes("upload") ? "Podcast Upload Flow" : project?.title}
+          {pathname.includes("upload") ? "Podcast Upload Flow" : title}
         </p>
 
         <div className="flex flex-col">
@@ -52,16 +55,18 @@ const Sidebar = ({ project }) => {
               className={`py-4 px-[10px] flex items-center gap-2 ${
                 index > 1 && "pointer-events-none"
               } ${
-                pathname === link.route ||
-                pathname === `/projects/${project._id}/transcript`
+                pathname === link.route || link.route.startsWith(pathname) ||
+                (link.route === `/projects/${id}/upload` &&
+                  pathname.startsWith(`/projects/${id}/files`))
                   ? "bg-primary rounded-[132px]"
                   : ""
               }`}
             >
               <div
                 className={`w-8 h-8 text-[18px] leading-[26px] font-semibold rounded-full flex justify-center items-center ${
-                  pathname === link.route ||
-                  pathname === `/projects/${project._id}/transcript`
+                  pathname === link.route || link.route.startsWith(pathname) ||
+                (link.route === `/projects/${id}/upload` &&
+                  pathname.startsWith(`/projects/${id}/files`))
                     ? " bg-black text-white"
                     : "text-[#3C3C3C] bg-[#1D1B20] bg-opacity-15"
                 }`}
@@ -71,8 +76,9 @@ const Sidebar = ({ project }) => {
 
               <p
                 className={`text-[18px] leading-[26px] ${
-                  pathname === link.route ||
-                  pathname === `/projects/${project._id}/transcript`
+                  pathname === link.route || link.route.startsWith(pathname) ||
+                (link.route === `/projects/${id}/upload` &&
+                  pathname.startsWith(`/projects/${id}/files`))
                     ? " text-white font-semibold"
                     : "text-[#49454F] font-medium"
                 }`}
@@ -85,9 +91,16 @@ const Sidebar = ({ project }) => {
       </div>
 
       <div className="pt-5 pb-4 px-3 flex items-center gap-2 border-t border-t-[#CAC4D0]">
-        <Image src="/assets/icons/setting-gear.svg" alt="gear" width={32} height={32} />
+        <Image
+          src="/assets/icons/setting-gear.svg"
+          alt="gear"
+          width={32}
+          height={32}
+        />
 
-        <p className="text-[18px] leading-[26px] tracking-[0.133px] font-medium text-[#49454F]">Settings</p>
+        <p className="text-[18px] leading-[26px] tracking-[0.133px] font-medium text-[#49454F]">
+          Settings
+        </p>
       </div>
     </section>
   );

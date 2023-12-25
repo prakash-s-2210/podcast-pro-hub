@@ -1,10 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import CreateProject from "../../../components/forms/CreateProject";
+import { CreateProject, Navbar, ProjectCard } from "../../../components/index";
 import { fetchProjects } from "../../../lib/actions/project.actions";
-import Navbar from "../../../components/shared/Navbar";
-import ProjectCard from "../../../components/cards/ProjectCard";
 
 const Page = async ({ params }) => {
   let user;

@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+import Auth from "./Auth";
+
 const ProjectNavbar = ({ title }) => {
   const pathname = usePathname();
 
@@ -19,11 +21,13 @@ const ProjectNavbar = ({ title }) => {
           / {title} /
         </p>
         <p className="relative top-1.5 text-primary font-medium">
-          {pathname.split("/").pop()}
+          {pathname.split("/").pop().replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
         </p>
       </div>
 
       <div className="flex items-center gap-4 max-md:hidden">
+        <Auth />
+
         <div className="flex items-center">
           <Image
             src="/assets/icons/arrow-down.svg"
