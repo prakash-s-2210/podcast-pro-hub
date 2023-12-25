@@ -21,7 +21,10 @@ import {
 } from "../../lib/actions/user.actions";
 
 const Auth = () => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(null);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState({
+    credential: null,
+    userId: null,
+  });
 
   const pathname = usePathname();
   const router = useRouter();
@@ -29,35 +32,29 @@ const Auth = () => {
 
   useEffect(() => {
     //Check user credentials exists in local storage. If credentials exists in local storage Check local storage credentials with backend credentials, if it matches show logout button or else show login button. This credential is nothing but UUID . Each time user loggedIn new UUID update in user credential column in a database then update the local storage with newly generated UUID
-
     const clientToken = localStorage.getItem("skaiLamaUserCredentials");
     if (clientToken) {
-      setIsUserLoggedIn(
-        (async () => {
-          try {
-            // Fetch user credentials from the server using the clientToken.
-            const serverToken = await fetchUserCredential(clientToken);
-
-            // Check if local storage credentials match backend credentials.
-            return clientToken === serverToken;
-          } catch (error) {
-            // Handle fetch errors, e.g., log or show an error message.
-            console.error("Error fetching user credentials:", error);
-          }
-        })()
-      );
-    }
-    else{
-      setIsUserLoggedIn(false);
+      (async () => {
+        try {
+          // Fetch user credentials from the server using the clientToken.
+          const serverToken = await fetchUserCredential(clientToken);
+          // Check if local storage credentials match backend credentials.
+          setIsUserLoggedIn({
+            credential: clientToken === serverToken.credential,
+            userId: serverToken.userId,
+          });
+        } catch (error) {
+          // Handle fetch errors, e.g., log or show an error message.
+          console.error("Error fetching user credentials:", error);
+        }
+      })();
+    } else {
+      setIsUserLoggedIn({ credential: false, userId: null });
     }
   }, []);
 
-  isUserLoggedIn === false && pathname !== "/" && redirect("/");
-
-  // isUserLoggedIn === true &&
-  //   pathname === "/" && 
-  //   redirect("/create-question/cdcd");
-
+  isUserLoggedIn.credential === false && pathname !== "/" && redirect("/");
+  
   const signupForm = useForm({
     resolver: zodResolver(signupValidation),
     defaultValues: {
@@ -81,6 +78,7 @@ const Auth = () => {
       });
 
       localStorage.setItem("skaiLamaUserCredentials", user.credential);
+      setIsUserLoggedIn({ ...isUserLoggedIn, credential: true });
       router.push(`/create-project/${user.userId}`);
     } catch (error) {
       toast({
@@ -95,6 +93,7 @@ const Auth = () => {
     try {
       const user = await validateUserEmail(values.email);
       localStorage.setItem("skaiLamaUserCredentials", user.credential);
+      setIsUserLoggedIn({ ...isUserLoggedIn, credential: true });
       router.push(`/create-project/${user.userId}`);
     } catch (error) {
       toast({
@@ -107,8 +106,8 @@ const Auth = () => {
 
   return (
     <div className="flex gap-3">
-      {isUserLoggedIn === null && localStorage.getItem("skaiLamaUserCredentials") !== null ? null : localStorage.getItem("skaiLamaUserCredentials") ===
-        null ? (
+      {isUserLoggedIn.credential === null ? null : isUserLoggedIn.credential ===
+        false ? (
         <AuthForm
           signupForm={signupForm}
           loginForm={loginForm}
@@ -117,9 +116,9 @@ const Auth = () => {
         />
       ) : (
         <>
-          {/* {pathname === "/" && (
+          {pathname === "/" && (
             <Link
-              href="/"
+              href={`/create-project/${isUserLoggedIn.userId}`}
               className="flex items-center gap-3 pl-5 pr-8 py-2.5 bg-[#211935] text-[#F8F8F8] font-semibold rounded-xl"
             >
               <div className="w-5 h-5 flex items-center justify-center rounded-full text-[20px] text-[#211935] bg-[#F8F8F8]">
@@ -128,12 +127,12 @@ const Auth = () => {
 
               <p className="text-[18px]">Create New Project</p>
             </Link>
-          )} */}
+          )}
           <Button
             className="btn-primary"
             onClick={() => {
               localStorage.removeItem("skaiLamaUserCredentials");
-              setIsUserLoggedIn(false);
+              setIsUserLoggedIn({ credential: false, userId: null });
             }}
           >
             Logout
