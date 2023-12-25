@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
+import { useState } from "react";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -18,13 +20,24 @@ import { widgetConfigurationTab } from "../../constants";
 import GeneralTab from "./GeneralTab";
 import DisplayTab from "./DisplayTab";
 
-const WidgetConfigurationForm = ({
-  projectId,
-  tab,
-  widgetConfiguration,
-}) => {
-  const {toast} = useToast();
+import { isBase64Image } from "../../lib/utils";
+import { useUploadThing } from "../../lib/uploadthing";
+
+const WidgetConfigurationForm = ({ projectId, tab, widgetConfiguration }) => {
+  const { toast } = useToast();
   const router = useRouter();
+  const [files, setFiles] = useState([]);
+  const { startUpload } = useUploadThing("imageUploader", {
+    onClientUploadComplete: () => {
+      console.log("uploaded successfully!");
+    },
+    onUploadError: () => {
+      console.log("error occurred while uploading");
+    },
+    onUploadBegin: () => {
+      console.log("upload has begun");
+    },
+  });
 
   const widgetConfigurationForm = useForm({
     resolver: zodResolver(widgetConfigurationValidation),
@@ -71,6 +84,17 @@ const WidgetConfigurationForm = ({
 
   const onSubmit = async (values) => {
     try {
+      const blob = values.botIcon;
+
+      const hasImageChanged = isBase64Image(blob);
+      if (hasImageChanged) {
+        const imgRes = await startUpload(files);
+
+        if (imgRes && imgRes[0].url) {
+          values.botIcon = imgRes[0].url;
+        }
+      }
+
       const toastMessage = await updateWidgetConfiguration({
         chatbotName: values.chatbotName,
         welcomeMessage: values.welcomeMessage,
@@ -97,6 +121,10 @@ const WidgetConfigurationForm = ({
       console.log(error.message);
     }
   };
+
+  const handleFilesChange  = (imageFiles) => {
+    setFiles(imageFiles);
+  }
 
   return (
     <>
@@ -138,6 +166,7 @@ const WidgetConfigurationForm = ({
             <DisplayTab
               widgetConfigurationForm={widgetConfigurationForm}
               projectId={projectId}
+              onFileChange = {handleFilesChange}
             />
           )}
         </form>

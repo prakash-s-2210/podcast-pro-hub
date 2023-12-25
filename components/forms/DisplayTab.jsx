@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
 
 import {
   FormDescription,
@@ -21,7 +23,27 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 
-const DisplayTab = ({ widgetConfigurationForm, projectId }) => {
+const DisplayTab = ({ widgetConfigurationForm, projectId, onFileChange }) => {
+  const handleImage = (e, fieldChange) => {
+    e.preventDefault();
+
+    const fileReader = new FileReader();
+
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      onFileChange(Array.from(e.target.files));
+
+      if (!file.type.includes("image")) return;
+
+      fileReader.onload = async (event) => {
+        const imageDataUrl = event.target?.result?.toString() ?? "";
+        fieldChange(imageDataUrl);
+      };
+
+      fileReader.readAsDataURL(file);
+    }
+  };
+
   return (
     <>
       <div className="flex gap-x-16 gap-y-8 max-xl:flex-wrap">
@@ -260,6 +282,61 @@ const DisplayTab = ({ widgetConfigurationForm, projectId }) => {
           )}
         />
       </div>
+
+      <FormField
+        control={form.control}
+        name="profile_photo"
+        render={({ field }) => (
+          <FormItem className="flex items-center gap-4">
+            <FormLabel className="flex flex-col gap-4">
+              <p className="text-[20px] font-bold text-[#3C3C3C]">Bot Icon</p>
+              <div className="flex items-center gap-5">
+                {field.value ? (
+                  <Image
+                    src={field.value}
+                    alt="bot icon"
+                    width={48}
+                    height={48}
+                    priority
+                    className="rounded-full object-contain w-12 h-12"
+                  />
+                ) : (
+                  <Image
+                    src="/assets/images/default.png"
+                    alt="Bot icon"
+                    width={48}
+                    height={48}
+                    className="object-contain rounded-full w-12 h-12"
+                  />
+                )}
+
+                <div className="flex flex-col gap-2">
+                  <Button className="flex items-center gap-2 bg-primary hover:bg-primary rounded-lg px-6 py-3">
+                    <p className="text-white font-bold text-[16px]">Upload Image</p>
+                    <Image
+                      src="/assets/icons/upload-icon.svg"
+                      alt="upload"
+                      width={20}
+                      height={20}
+                      className="object-contain rounded-full w-12 h-12"
+                    />
+                  </Button>
+
+                  <p className="text-[13px] text-[#646464]">Recommended Size: 48X48px</p>
+                </div>
+              </div>
+            </FormLabel>
+            <FormControl className="flex-1 text-base-semibold text-gray-200">
+              <Input
+                type="file"
+                accept="image/*"
+                className="h-[1px] invisible"
+                onChange={(e) => onFileChange(e, field.onChange)}
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
 
       <div>
         <div className="flex justify-end gap-5">
