@@ -284,7 +284,7 @@ const DisplayTab = ({ widgetConfigurationForm, projectId, onFileChange }) => {
       </div>
 
       <FormField
-        control={form.control}
+        control={widgetConfigurationForm.control}
         name="botIcon"
         render={({ field }) => (
           <FormItem className="flex items-center gap-4">
