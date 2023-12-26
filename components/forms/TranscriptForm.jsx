@@ -57,12 +57,13 @@ const TranscriptForm = ({ userId, projectId, id, title, description }) => {
       setIsSubmitting(false);
       setIsEditing(!isEditing);
     } catch (error) {
-      alert(error.message);
       toast({
         title: error.message,
         variant: "destructive",
         duration: 2500,
       });
+      setIsSubmitting(false);
+      setIsEditing(!isEditing);
     }
   };
 

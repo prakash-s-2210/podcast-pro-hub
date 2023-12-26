@@ -26,11 +26,14 @@ const AuthForm = ({
   onSignupSubmit,
   onLoginSubmit,
   isSubmitting,
+  openLogin,
+  openSignup,
+  setOpenLogin,
+  setOpenSignup,
 }) => {
-  
   return (
     <>
-      <Dialog>
+      <Dialog open={openSignup} onOpenChange={setOpenSignup}>
         <DialogTrigger className="btn-primary px-4 py-2 rounded-md text-white cursor-pointer">
           Sign up
         </DialogTrigger>
@@ -99,7 +102,7 @@ const AuthForm = ({
         </DialogContent>
       </Dialog>
 
-      <Dialog>
+      <Dialog open={openLogin} onOpenChange={setOpenLogin}>
         <DialogTrigger className="bg-[#1d1b2014] text-primary border border-primary hover:bg-[#1d1b2014] px-4 py-2 rounded-md">
           Log in
         </DialogTrigger>

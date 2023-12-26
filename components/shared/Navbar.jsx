@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
 import Auth from "./Auth";
@@ -11,7 +12,7 @@ const Navbar = () => {
   return (
     <header className="w-full p-8 fixed top-0 left-0 z-20 bg-white">
       <nav className="flex justify-between items-center">
-        <div className="flex items-center gap-[6px]">
+        <Link href = "/" className="flex items-center gap-[6px]">
           <Image
             src="/assets/icons/logo.svg"
             alt="logo"
@@ -24,7 +25,7 @@ const Navbar = () => {
           >
             LAMA.
           </p>
-        </div>
+        </Link>
 
         <div className="flex items-center gap-3">
           <Auth />

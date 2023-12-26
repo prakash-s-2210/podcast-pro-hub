@@ -27,6 +27,7 @@ const WidgetConfigurationForm = ({ userId, projectId, tab, widgetConfiguration }
   const { toast } = useToast();
   const router = useRouter();
   const [files, setFiles] = useState([]);
+  const [ isSubmitting, setIsSubmitting ] = useState(false);
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {
       console.log("uploaded successfully!");
@@ -84,6 +85,7 @@ const WidgetConfigurationForm = ({ userId, projectId, tab, widgetConfiguration }
 
   const onSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
       const blob = values.botIcon;
 
       const hasImageChanged = isBase64Image(blob);
@@ -116,9 +118,16 @@ const WidgetConfigurationForm = ({ userId, projectId, tab, widgetConfiguration }
         title: toastMessage,
         duration: 2500,
       });
+      setIsSubmitting(false);
       router.push(`/${userId}/projects/${projectId}/widget-configuration?tab=general`);
     } catch (error) {
-      console.log(error.message);
+      toast({
+        title: error.message,
+        variant: "destructive",
+        duration: 2500,
+      });
+
+      setIsSubmitting(false);
     }
   };
 
@@ -165,6 +174,7 @@ const WidgetConfigurationForm = ({ userId, projectId, tab, widgetConfiguration }
 
           {tab === "display" && (
             <DisplayTab
+              isSubmitting = {isSubmitting}
               userId = {userId}
               widgetConfigurationForm={widgetConfigurationForm}
               projectId={projectId}

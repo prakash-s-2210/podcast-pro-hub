@@ -22,7 +22,15 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 
-const DisplayTab = ({ userId, widgetConfigurationForm, projectId, onFileChange }) => {
+import { Loader } from "../index";
+
+const DisplayTab = ({
+  isSubmitting,
+  userId,
+  widgetConfigurationForm,
+  projectId,
+  onFileChange,
+}) => {
   const handleImage = (e, fieldChange) => {
     e.preventDefault();
 
@@ -311,7 +319,9 @@ const DisplayTab = ({ userId, widgetConfigurationForm, projectId, onFileChange }
 
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2 bg-primary hover:bg-primary rounded-lg px-6 py-3">
-                    <p className="text-white font-bold text-[16px]">Upload Image</p>
+                    <p className="text-white font-bold text-[16px]">
+                      Upload Image
+                    </p>
                     <Image
                       src="/assets/icons/upload-icon.svg"
                       alt="upload"
@@ -321,7 +331,9 @@ const DisplayTab = ({ userId, widgetConfigurationForm, projectId, onFileChange }
                     />
                   </div>
 
-                  <p className="text-[13px] text-[#646464]">Recommended Size: 48X48px</p>
+                  <p className="text-[13px] text-[#646464]">
+                    Recommended Size: 48X48px
+                  </p>
                 </div>
               </div>
             </FormLabel>
@@ -350,12 +362,14 @@ const DisplayTab = ({ userId, widgetConfigurationForm, projectId, onFileChange }
               Back
             </Button>
           </Link>
-
           <Button
             type="submit"
-            className="bg-primary hover:bg-primary px-10 text-[20px]"
+            className={`${
+              isSubmitting && "btn-submit"
+            } px-10 text-[20px] btn-primary gap-2 `}
           >
-            Save
+            <span>Save</span>
+            {isSubmitting && <Loader />}
           </Button>
         </div>
       </div>

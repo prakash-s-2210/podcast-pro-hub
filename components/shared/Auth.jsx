@@ -26,6 +26,8 @@ const Auth = () => {
     userId: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openSignup, setOpenSignup] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
@@ -55,7 +57,7 @@ const Auth = () => {
   }, []);
 
   isUserLoggedIn.credential === false && pathname !== "/" && redirect("/");
-  
+
   const signupForm = useForm({
     resolver: zodResolver(signupValidation),
     defaultValues: {
@@ -85,6 +87,7 @@ const Auth = () => {
       localStorage.setItem("skaiLamaUserCredentials", user.credential);
       setIsSubmitting(false);
       setIsUserLoggedIn({ ...isUserLoggedIn, credential: true });
+      setOpenSignup(false);
       router.push(`/create-project/${user.userId}`);
     } catch (error) {
       toast({
@@ -92,6 +95,8 @@ const Auth = () => {
         variant: "destructive",
         duration: 2500,
       });
+      setIsSubmitting(false);
+      setOpenSignup(false);
     }
   };
 
@@ -106,6 +111,7 @@ const Auth = () => {
       localStorage.setItem("skaiLamaUserCredentials", user.credential);
       setIsSubmitting(false);
       setIsUserLoggedIn({ ...isUserLoggedIn, credential: true });
+      setOpenLogin(false);
       router.push(`/create-project/${user.userId}`);
     } catch (error) {
       toast({
@@ -113,6 +119,9 @@ const Auth = () => {
         variant: "destructive",
         duration: 2500,
       });
+
+      setIsSubmitting(false);
+      setOpenLogin(false);
     }
   };
 
@@ -126,13 +135,17 @@ const Auth = () => {
           onSignupSubmit={onSignupSubmit}
           onLoginSubmit={onLoginSubmit}
           isSubmitting={isSubmitting}
+          openLogin={openLogin}
+          openSignup={openSignup}
+          setOpenLogin={setOpenLogin}
+          setOpenSignup={setOpenSignup}
         />
       ) : (
         <>
           {pathname === "/" && (
             <Link
               href={`/create-project/${isUserLoggedIn.userId}`}
-              className="flex items-center gap-3 pl-5 pr-8 py-2.5 bg-[#211935] text-[#F8F8F8] hover:bg-opacity-70  font-semibold rounded-xl"
+              className="flex items-center gap-3 pl-5 pr-8 py-2 bg-[#211935] text-[#F8F8F8] hover:bg-opacity-70  font-semibold rounded-xl"
             >
               <div className="w-5 h-5 flex items-center justify-center rounded-full text-[20px] text-[#211935] bg-[#F8F8F8]">
                 +

@@ -37,7 +37,7 @@ const Page = async ({ params }) => {
             <div className="flex justify-between items-center flex-wrap">
               <h1 className="head-text my-5">Projects</h1>
 
-              <CreateProject path = {`/create-project/${params.id}`} />
+              <CreateProject userId = {params.userId} path = {`/create-project/${params.userId}`} />
             </div>
 
             <div className="flex flex-wrap gap-x-20 gap-y-16 mt-10">
@@ -75,7 +75,7 @@ const Page = async ({ params }) => {
             </p>
 
             <div className="w-full flex justify-center mt-5">
-              <CreateProject />
+              <CreateProject userId = {params.userId} path = {`/create-project/${params.userId}`} />
             </div>
           </>
         )}

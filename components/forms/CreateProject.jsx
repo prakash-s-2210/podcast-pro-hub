@@ -30,7 +30,7 @@ import { Loader } from "../index";
 import { projectValidation } from "../../lib/validations/projects";
 import { createProject } from "../../lib/actions/project.actions";
 
-const CreateProject = (path) => {
+const CreateProject = ({userId, path}) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,15 +42,14 @@ const CreateProject = (path) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onCreateProjectSubmit = async (values) => {
     try {
       setIsSubmitting(true);
       const toastMessage = await createProject({
         title: values.title,
-        credential: localStorage.getItem("skaiLamaUserCredentials"),
+        userId: userId,
         path: path,
       });
-
       projectForm.reset();
       
       setIsSubmitting(false);
@@ -66,6 +65,9 @@ const CreateProject = (path) => {
         variant: "destructive",
         duration: 2500,
       });
+      
+      setIsSubmitting(false);
+      setOpen(false);
     }
   };
 
@@ -85,7 +87,7 @@ const CreateProject = (path) => {
         <Form {...projectForm}>
           <form
             className="mt-4 flex flex-col justify-start gap-7"
-            onSubmit={projectForm.handleSubmit(onSubmit)}
+            onSubmit={projectForm.handleSubmit(onCreateProjectSubmit)}
           >
             <FormField
               control={projectForm.control}

@@ -59,7 +59,6 @@ const UploadForm = ({ children, projectId, formTitle, icon }) => {
       uploadForm.reset();
 
       setIsSubmitting(false);
-
       setOpen(false);
 
       toast({
@@ -72,6 +71,9 @@ const UploadForm = ({ children, projectId, formTitle, icon }) => {
         variant: "destructive",
         duration: 2500,
       });
+
+      setIsSubmitting(false);
+      setOpen(false);
     }
   };
 

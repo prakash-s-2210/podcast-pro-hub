@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,13 +18,15 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast"; 
+import { useToast } from "../ui/use-toast";
+
+import { Loader } from "../index";
 
 import { accountSettingValidation } from "../../lib/validations/auth";
 
 const AccountForm = ({ userId, username, email, projectId }) => {
-  const {toast} = useToast();
-  const router = useRouter();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const accountSettingsForm = useForm({
     resolver: zodResolver(accountSettingValidation),
@@ -36,6 +38,7 @@ const AccountForm = ({ userId, username, email, projectId }) => {
 
   const onSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
       const toastMessage = await updateAccountInfo({
         username: values.username,
         userId: userId,
@@ -45,10 +48,15 @@ const AccountForm = ({ userId, username, email, projectId }) => {
         title: toastMessage,
         duration: 2500,
       });
-
-      // router.push(`/projects/${projectId}/account-settings`);
+      setIsSubmitting(false);
     } catch (error) {
-      console.log(error.message);
+      toast({
+        title: error.message,
+        variant: "destructive",
+        duration: 2500,
+      });
+
+      setIsSubmitting(false);
     }
   };
 
@@ -112,7 +120,13 @@ const AccountForm = ({ userId, username, email, projectId }) => {
         </div>
 
         <div className="flex justify-end">
-            <Button type="submit">Update</Button>
+          <Button
+            type="submit"
+            className={`${isSubmitting && "btn-submit"}  gap-4`}
+          >
+            <span>Update</span>
+            {isSubmitting && <Loader />}
+          </Button>
         </div>
       </form>
     </Form>
