@@ -25,12 +25,15 @@ import {
 } from "../ui/dialog";
 import { useToast } from "../ui/use-toast";
 
+import { Loader } from "../index";
+
 import { projectValidation } from "../../lib/validations/projects";
 import { createProject } from "../../lib/actions/project.actions";
 
 const CreateProject = (path) => {
   const { toast } = useToast();
-  const [ open, setOpen ] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const projectForm = useForm({
     resolver: zodResolver(projectValidation),
@@ -41,14 +44,16 @@ const CreateProject = (path) => {
 
   const onSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
       const toastMessage = await createProject({
         title: values.title,
         credential: localStorage.getItem("skaiLamaUserCredentials"),
-        path: path
+        path: path,
       });
 
       projectForm.reset();
-
+      
+      setIsSubmitting(false);
       setOpen(false);
 
       toast({
@@ -66,7 +71,7 @@ const CreateProject = (path) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="flex items-center gap-3 pl-5 pr-8 py-2 bg-[#211935] text-[#F8F8F8] font-semibold rounded-xl">
+      <DialogTrigger className="flex items-center gap-3 pl-5 pr-8 py-2 bg-[#211935] hover:bg-opacity-80 text-[#F8F8F8] font-semibold rounded-xl">
         <div className="max-sm:hidden w-8 h-8 flex items-center justify-center rounded-full text-[34px] text-[#211935] bg-[#F8F8F8]">
           +
         </div>
@@ -103,7 +108,7 @@ const CreateProject = (path) => {
               )}
             />
 
-            <div className="flex justify-end">
+            <div className="flex justify-end items-center gap-5">
               <DialogClose asChild>
                 <Button
                   type="button"
@@ -112,9 +117,13 @@ const CreateProject = (path) => {
                   Cancel
                 </Button>
               </DialogClose>
-                <Button type="submit" className="btn-primary h-8">
-                  Create
-                </Button>
+              <Button
+                type="submit"
+                className={`${isSubmitting && "btn-submit"} btn-primary gap-2 `}
+              >
+                <span>Create</span>
+                {isSubmitting && <Loader />}
+              </Button>
             </div>
           </form>
         </Form>

@@ -27,12 +27,15 @@ import {
 } from "../ui/dialog";
 import { useToast } from "../ui/use-toast";
 
+import { Loader } from "../index";
+
 import { uploadValidation } from "../../lib/validations/projects";
 import { createFile } from "../../lib/actions/project.actions";
 
 const UploadForm = ({ children, projectId, formTitle, icon }) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const uploadForm = useForm({
     resolver: zodResolver(uploadValidation),
@@ -44,6 +47,8 @@ const UploadForm = ({ children, projectId, formTitle, icon }) => {
 
   const onSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
+
       const toastMessage = await createFile({
         title: values.title,
         description: values.description,
@@ -52,6 +57,8 @@ const UploadForm = ({ children, projectId, formTitle, icon }) => {
       });
 
       uploadForm.reset();
+
+      setIsSubmitting(false);
 
       setOpen(false);
 
@@ -130,12 +137,18 @@ const UploadForm = ({ children, projectId, formTitle, icon }) => {
               <DialogClose asChild>
                 <Button
                   type="button"
-                  className="text-[#FF274C] font-bold bg-white hover:bg-white"
+                  className="text-[#FF274C] text-[18px] font-bold bg-white hover:bg-white"
                 >
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">Save</Button>
+              <Button
+                type="submit"
+                className={`${isSubmitting && "btn-submit"} gap-2`}
+              >
+                <span className="text-[18px]">Save</span>
+                {isSubmitting && <Loader />}
+              </Button>
             </div>
           </form>
         </Form>

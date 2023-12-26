@@ -20,7 +20,7 @@ const Page = async ({ params }) => {
       <section className="px-8 sm:px-32 lg:px-44 pt-[166px] pb-12">
         <Link
           href="/"
-          className="home-shadow flex items-center gap-[5px] w-fit px-[14px] py-[6px] border-[0.75px] border-[#999] rounded-[36px]"
+          className="hover:home-shadow flex items-center gap-[5px] w-fit px-[14px] py-[6px] border-[0.75px] border-[#999] rounded-[36px]"
         >
           <Image
             src="/assets/icons/home.svg"

@@ -18,12 +18,21 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 
-const AuthForm = ({ signupForm, loginForm, onSignupSubmit, onLoginSubmit }) => {
+import { Loader } from "../index";
+
+const AuthForm = ({
+  signupForm,
+  loginForm,
+  onSignupSubmit,
+  onLoginSubmit,
+  isSubmitting,
+}) => {
+  
   return (
     <>
       <Dialog>
         <DialogTrigger className="btn-primary px-4 py-2 rounded-md text-white cursor-pointer">
-          Sign Up
+          Sign up
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -78,8 +87,12 @@ const AuthForm = ({ signupForm, loginForm, onSignupSubmit, onLoginSubmit }) => {
                 )}
               />
 
-              <Button type="submit" className="btn-primary">
-                Sign Up
+              <Button
+                type="submit"
+                className={`${isSubmitting && "btn-submit"} btn-primary gap-4`}
+              >
+                <span>Sign up</span>
+                {isSubmitting && <Loader />}
               </Button>
             </form>
           </Form>
@@ -88,7 +101,7 @@ const AuthForm = ({ signupForm, loginForm, onSignupSubmit, onLoginSubmit }) => {
 
       <Dialog>
         <DialogTrigger className="bg-[#1d1b2014] text-primary border border-primary hover:bg-[#1d1b2014] px-4 py-2 rounded-md">
-          Log In
+          Log in
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -120,8 +133,12 @@ const AuthForm = ({ signupForm, loginForm, onSignupSubmit, onLoginSubmit }) => {
                 )}
               />
 
-              <Button type="submit" className="btn-primary">
-                Log In
+              <Button
+                type="submit"
+                className={`${isSubmitting && "btn-submit"} btn-primary gap-4`}
+              >
+                <span>Log in</span>
+                {isSubmitting && <Loader />}
               </Button>
             </form>
           </Form>

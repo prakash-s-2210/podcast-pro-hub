@@ -25,6 +25,7 @@ const Auth = () => {
     credential: null,
     userId: null,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
@@ -72,12 +73,17 @@ const Auth = () => {
 
   const onSignupSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
       const user = await createUser({
         username: values.username,
         email: values.email,
       });
-
+      toast({
+        title: "Your account has been successfully created.",
+        duration: 2500,
+      });
       localStorage.setItem("skaiLamaUserCredentials", user.credential);
+      setIsSubmitting(false);
       setIsUserLoggedIn({ ...isUserLoggedIn, credential: true });
       router.push(`/create-project/${user.userId}`);
     } catch (error) {
@@ -91,8 +97,14 @@ const Auth = () => {
 
   const onLoginSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
       const user = await validateUserEmail(values.email);
+      toast({
+        title: "You have successfully logged into your Skai Lama account.",
+        duration: 1500,
+      });
       localStorage.setItem("skaiLamaUserCredentials", user.credential);
+      setIsSubmitting(false);
       setIsUserLoggedIn({ ...isUserLoggedIn, credential: true });
       router.push(`/create-project/${user.userId}`);
     } catch (error) {
@@ -113,13 +125,14 @@ const Auth = () => {
           loginForm={loginForm}
           onSignupSubmit={onSignupSubmit}
           onLoginSubmit={onLoginSubmit}
+          isSubmitting={isSubmitting}
         />
       ) : (
         <>
           {pathname === "/" && (
             <Link
               href={`/create-project/${isUserLoggedIn.userId}`}
-              className="flex items-center gap-3 pl-5 pr-8 py-2.5 bg-[#211935] text-[#F8F8F8] font-semibold rounded-xl"
+              className="flex items-center gap-3 pl-5 pr-8 py-2.5 bg-[#211935] text-[#F8F8F8] hover:bg-opacity-70  font-semibold rounded-xl"
             >
               <div className="w-5 h-5 flex items-center justify-center rounded-full text-[20px] text-[#211935] bg-[#F8F8F8]">
                 +

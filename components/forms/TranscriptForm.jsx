@@ -20,12 +20,17 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
+import { useToast } from "../ui/use-toast";
+
+import { Loader } from "../index";
 
 import { uploadValidation } from "../../lib/validations/projects";
 import { updateFile } from "../../lib/actions/project.actions";
 
 const TranscriptForm = ({ userId, projectId, id, title, description }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
   const router = useRouter();
 
   const transcriptForm = useForm({
@@ -36,18 +41,28 @@ const TranscriptForm = ({ userId, projectId, id, title, description }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onTranscriptSubmit = async (values) => {
     try {
-      await updateFile({
+      setIsSubmitting(true);
+      const toastMessage = await updateFile({
         title: values.title,
         description: values.description,
         fileId: id,
-        path: `/projects/${projectId}/upload`,
+        path: `/${userId}/projects/${projectId}/upload`,
       });
-      router.push(`/${userId}/projects/${projectId}/upload`);
+      toast({
+        title: toastMessage,
+        duration: 2500,
+      });
+      setIsSubmitting(false);
       setIsEditing(!isEditing);
     } catch (error) {
-      console.log(error.message);
+      alert(error.message);
+      toast({
+        title: error.message,
+        variant: "destructive",
+        duration: 2500,
+      });
     }
   };
 
@@ -58,7 +73,7 @@ const TranscriptForm = ({ userId, projectId, id, title, description }) => {
 
         <Link
           href={`/${userId}/projects/${projectId}/upload`}
-          className="flex items-center gap-2 rounded-lg bg-primary text-white px-5 py-2"
+          className="flex items-center gap-2 rounded-lg bg-primary hover:bg-opacity-70 text-white px-5 py-2"
         >
           <Image
             src="/assets/icons/arrow-left.svg"
@@ -73,6 +88,7 @@ const TranscriptForm = ({ userId, projectId, id, title, description }) => {
 
       <div className="min-h-80 border-2 border-[#7E22CE] rounded-[20px] pl-5 pr-8 pt-4 pb-8 flex flex-col gap-6">
         <Button
+          type="button"
           className="flex items-center gap-1 w-fit bg-[#4b4b4b] rounded-[113px] hover:bg-opacity-90 hover:bg-[#4b4b4b]"
           onClick={() => setIsEditing(!isEditing)}
         >
@@ -84,20 +100,26 @@ const TranscriptForm = ({ userId, projectId, id, title, description }) => {
         <div className="h-full">
           {isEditing ? (
             <Form {...transcriptForm}>
-              <form onSubmit={transcriptForm.handleSubmit(onSubmit)}>
-                <div className="flex justify-end gap-2">
+              <form onSubmit={transcriptForm.handleSubmit(onTranscriptSubmit)}>
+                <div className="flex justify-end gap-3">
                   <Button
-                    className="px-8 py-4 border-2 border-[#FF274C] text-[20px] text-[#FF274C] font-semibold bg-white hover:bg-white"
+                   type="button"
+                    className="px-8 py-4 border-2 border-[#FF274C] text-[20px] text-[#FF274C] hover:bg-slate-100 hover:home-shadow font-semibold bg-white"
                     onClick={() => setIsEditing(!isEditing)}
                   >
                     Discard
                   </Button>
+
                   <Button
                     type="submit"
-                    onClick={() => onSubmit()}
-                    className="px-8 py-4 text-[20px] font-semibold "
+                    className={`${
+                      isSubmitting && "btn-submit"
+                    }  px-6 py-4 text-[20px] gap-4`}
                   >
-                    Save & exit
+                    <span className="text-[20px]  font-semibold">
+                      Save & exit
+                    </span>
+                    {isSubmitting && <Loader />}
                   </Button>
                 </div>
                 <FormField
