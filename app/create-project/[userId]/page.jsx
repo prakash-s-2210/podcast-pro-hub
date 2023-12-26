@@ -7,7 +7,7 @@ import { fetchProjects } from "../../../lib/actions/project.actions";
 const Page = async ({ params }) => {
   let user;
   try{
-   user = await fetchProjects(params.id);
+   user = await fetchProjects(params.userId);
   }
   catch(error){
     console.log(error.message);
@@ -44,6 +44,7 @@ const Page = async ({ params }) => {
               {user.projects.map((project, index) => (
                 <ProjectCard
                   key={index}
+                  userId = {user._id}
                   project = {project}
                   projects={user.projects}
                   index={index}

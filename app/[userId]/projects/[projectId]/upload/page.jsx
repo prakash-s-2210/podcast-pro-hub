@@ -1,15 +1,15 @@
 import Image from "next/image";
 
-import { Sidebar, ProjectNavbar, FileTableCard, UploadForm } from "../../../../components/index";
+import { Sidebar, ProjectNavbar, FileTableCard, UploadForm } from "../../../../../components/index";
 
-import { fetchProjectById } from "../../../../lib/actions/project.actions";
+import { fetchProjectById } from "../../../../../lib/actions/project.actions";
 import {
   uploadOptions,
   defaultUploadOptions,
-} from "../../../../constants/index";
+} from "../../../../../constants/index";
 
 const Page = async ({ params }) => {
-  const project = await fetchProjectById(params.id);
+  const project = await fetchProjectById(params.projectId);
 
   let dropOptionContent = (
     <div className="cursor-pointer flex flex-col items-center border-[4px] border-dashed rounded-[20px] border-[#999] w-full">
@@ -37,7 +37,7 @@ const Page = async ({ params }) => {
 
   return (
     <main className="flex">
-      <Sidebar id={project._id} title={project.title} />
+      <Sidebar userId = {params.userId} projectId={project._id} title={project.title} />
 
       <section className="flex-1 flex flex-col gap-14  pb-16">
         <ProjectNavbar title={project.title} />
@@ -102,7 +102,7 @@ const Page = async ({ params }) => {
                   </thead>
                   <tbody>
                     {project?.files.map((file, index) => (
-                      <FileTableCard key={file.title+index} projectId={project._id} id = {file._id} title= {file.title} updatedAt = {file.updatedAt} length = {project.files.length} index={index} />
+                      <FileTableCard key={file.title+index} userId = {params.userId} projectId={project._id} id = {file._id} title= {file.title} updatedAt = {file.updatedAt} length = {project.files.length} index={index} />
                     ))}
                   </tbody>
                 </table>

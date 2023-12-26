@@ -23,7 +23,7 @@ import DisplayTab from "./DisplayTab";
 import { isBase64Image } from "../../lib/utils";
 import { useUploadThing } from "../../lib/uploadthing";
 
-const WidgetConfigurationForm = ({ projectId, tab, widgetConfiguration }) => {
+const WidgetConfigurationForm = ({ userId, projectId, tab, widgetConfiguration }) => {
   const { toast } = useToast();
   const router = useRouter();
   const [files, setFiles] = useState([]);
@@ -116,7 +116,7 @@ const WidgetConfigurationForm = ({ projectId, tab, widgetConfiguration }) => {
         title: toastMessage,
         duration: 2500,
       });
-      router.push(`/projects/${projectId}/widget-configuration?tab=general`);
+      router.push(`/${userId}/projects/${projectId}/widget-configuration?tab=general`);
     } catch (error) {
       console.log(error.message);
     }
@@ -131,7 +131,7 @@ const WidgetConfigurationForm = ({ projectId, tab, widgetConfiguration }) => {
       <div className="flex border-b-4 border-b-[#DADADA]">
         {widgetConfigurationTab.map((item) => (
           <Link
-            href={`/projects/${projectId}/widget-configuration?tab=${item.query}`}
+            href={`/${userId}/projects/${projectId}/widget-configuration?tab=${item.query}`}
             key={item.label}
             className={`pr-3 text-[22px] ${
               item.query === "advanced" && "pointer-events-none"
@@ -157,6 +157,7 @@ const WidgetConfigurationForm = ({ projectId, tab, widgetConfiguration }) => {
         >
           {tab === "general" && (
             <GeneralTab
+              userId = {userId}
               widgetConfigurationForm={widgetConfigurationForm}
               projectId={projectId}
             />
@@ -164,6 +165,7 @@ const WidgetConfigurationForm = ({ projectId, tab, widgetConfiguration }) => {
 
           {tab === "display" && (
             <DisplayTab
+              userId = {userId}
               widgetConfigurationForm={widgetConfigurationForm}
               projectId={projectId}
               onFileChange = {handleFilesChange}

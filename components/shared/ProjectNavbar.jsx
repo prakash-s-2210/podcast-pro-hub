@@ -17,11 +17,11 @@ const ProjectNavbar = ({ title }) => {
           width={52}
           height={52}
         />
-        <p className="relative top-1.5 text-[#999999] font-medium">
+        {title && <p className="relative top-1.5 text-[#999999] font-medium">
           / {title} /
-        </p>
+        </p>}
         <p className="relative top-1.5 text-primary font-medium">
-          {pathname.split("/").pop().replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+          {!title ? `/ ${pathname.split("/").pop().replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}` : `${pathname.split("/").pop().replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`}
         </p>
       </div>
 

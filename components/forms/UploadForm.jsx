@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import { useState } from "react";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -30,6 +32,7 @@ import { createFile } from "../../lib/actions/project.actions";
 
 const UploadForm = ({ children, projectId, formTitle, icon }) => {
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
 
   const uploadForm = useForm({
     resolver: zodResolver(uploadValidation),
@@ -50,6 +53,8 @@ const UploadForm = ({ children, projectId, formTitle, icon }) => {
 
       uploadForm.reset();
 
+      setOpen(false);
+
       toast({
         title: toastMessage,
         duration: 2500,
@@ -64,7 +69,7 @@ const UploadForm = ({ children, projectId, formTitle, icon }) => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full">{children}</DialogTrigger>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
@@ -130,9 +135,7 @@ const UploadForm = ({ children, projectId, formTitle, icon }) => {
                   Cancel
                 </Button>
               </DialogClose>
-              <DialogClose asChild>
-                <Button type="submit">Save</Button>
-              </DialogClose>
+              <Button type="submit">Save</Button>
             </div>
           </form>
         </Form>

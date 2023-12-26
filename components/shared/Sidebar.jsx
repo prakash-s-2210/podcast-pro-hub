@@ -9,19 +9,19 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 
-const Sidebar = ({ id, title }) => {
+const Sidebar = ({ userId, projectId, title }) => {
   const pathname = usePathname();
 
   const sidebarLinks = [
-    { route: `/projects/${id}/upload`, label: "Projects" },
+    { route: `/${userId}/projects/${projectId}/upload`, label: "Projects" },
     {
-      route: `/projects/${id}/widget-configuration?tab=general`,
+      route: `/${userId}/projects/${projectId}/widget-configuration?tab=general`,
       label: "Widget Configurations",
     },
     { route: "null", label: "Deployment" },
     { route: "null", label: "Pricing" },
   ];
-
+  
   return (
     <section className="xl:w-[23%] h-screen custom-scrollbar bg-[#F3E8FF] rounded-r-md sticky top-0 left-0 z-30 flex flex-col justify-between p-4">
       <div className="flex flex-col border-b border-b-[#CAC4D0]">
@@ -55,18 +55,22 @@ const Sidebar = ({ id, title }) => {
               className={`py-4 px-[10px] flex items-center gap-2 ${
                 index > 1 && "pointer-events-none"
               } ${
-                pathname === link.route || link.route.startsWith(pathname) ||
-                (link.route === `/projects/${id}/upload` &&
-                  pathname.startsWith(`/projects/${id}/files`))
+                pathname === link.route ||
+                link.route.startsWith(pathname) ||
+                (link.route === `/${userId}/projects/${projectId}/upload` &&
+                  pathname.startsWith(`/${userId}/projects/${projectId}/files`))
                   ? "bg-primary rounded-[132px]"
                   : ""
               }`}
             >
               <div
                 className={`w-8 h-8 text-[18px] leading-[26px] font-semibold rounded-full flex justify-center items-center ${
-                  pathname === link.route || link.route.startsWith(pathname) ||
-                (link.route === `/projects/${id}/upload` &&
-                  pathname.startsWith(`/projects/${id}/files`))
+                  pathname === link.route ||
+                  link.route.startsWith(pathname) ||
+                  (link.route === `/${userId}/projects/${projectId}/upload` &&
+                    pathname.startsWith(
+                      `/${userId}/projects/${projectId}/files`
+                    ))
                     ? " bg-black text-white"
                     : "text-[#3C3C3C] bg-[#1D1B20] bg-opacity-15"
                 }`}
@@ -76,9 +80,12 @@ const Sidebar = ({ id, title }) => {
 
               <p
                 className={`text-[18px] leading-[26px] ${
-                  pathname === link.route || link.route.startsWith(pathname) ||
-                (link.route === `/projects/${id}/upload` &&
-                  pathname.startsWith(`/projects/${id}/files`))
+                  pathname === link.route ||
+                  link.route.startsWith(pathname) ||
+                  (link.route === `/${userId}/projects/${projectId}/upload` &&
+                    pathname.startsWith(
+                      `/${userId}/projects/${projectId}/files`
+                    ))
                     ? " text-white font-semibold"
                     : "text-[#49454F] font-medium"
                 }`}
@@ -90,18 +97,40 @@ const Sidebar = ({ id, title }) => {
         </div>
       </div>
 
-      <div className="pt-5 pb-4 px-3 flex items-center gap-2 border-t border-t-[#CAC4D0]">
-        <Image
-          src="/assets/icons/setting-gear.svg"
-          alt="gear"
-          width={32}
-          height={32}
-        />
+      <Link
+        href={`/${userId}/projects/${projectId}/account-settings`}
+        className={`pt-5 pb-4 px-3 flex items-center gap-2 border-t border-t-[#CAC4D0] ${
+          pathname ===
+            `/${userId}/projects/${projectId}/account-settings` && "bg-primary rounded-[132px]"
+        }`}
+      >
+        {pathname === `/${userId}/projects/${projectId}/account-settings` ? (
+          <Image
+            src="/assets/icons/gear-dark.svg"
+            alt="gear"
+            width={32}
+            height={32}
+          />
+        ) : (
+          <Image
+            src="/assets/icons/setting-gear.svg"
+            alt="gear"
+            width={32}
+            height={32}
+          />
+        )}
 
-        <p className="text-[18px] leading-[26px] tracking-[0.133px] font-medium text-[#49454F]">
+        <p
+          className={`text-[18px] leading-[26px] tracking-[0.133px] ${
+            pathname ===
+            `/${userId}/projects/${projectId}/account-settings`
+              ? " text-white font-semibold"
+              : "text-[#49454F] font-medium"
+          }`}
+        >
           Settings
         </p>
-      </div>
+      </Link>
     </section>
   );
 };

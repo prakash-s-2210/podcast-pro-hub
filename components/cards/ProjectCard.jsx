@@ -2,14 +2,14 @@ import Link from "next/link";
 
 import { timeAgo } from "../../lib/utils";
 
-const ProjectCard = ({ project, projects , index }) => {
+const ProjectCard = ({ userId, project, projects , index }) => {
   const colors = ["bg-blue", "bg-primary", "bg-amber"];
   let coloredArray = [];
   coloredArray = projects.map((_, index) => (
     colors[index % colors.length]));
 
   return (
-    <Link href={`/projects/${project._id}/upload`} className="cursor-pointer flex flex-wrap gap-x-7 py-3 pl-[14px] pr-8 border border-[#999] rounded-[26px] project-card-shadow">
+    <Link href={`/${userId}/projects/${project._id}/upload`} className="cursor-pointer flex flex-wrap gap-x-7 py-3 pl-[14px] pr-8 border border-[#999] rounded-[26px] project-card-shadow">
       <div
         className={`text-[66px] flex justify-center items-center text-white px-6 py-1 ${coloredArray[index]} rounded-[18px]`}
       >

@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -28,6 +30,7 @@ import { createProject } from "../../lib/actions/project.actions";
 
 const CreateProject = (path) => {
   const { toast } = useToast();
+  const [ open, setOpen ] = useState(false);
 
   const projectForm = useForm({
     resolver: zodResolver(projectValidation),
@@ -46,6 +49,8 @@ const CreateProject = (path) => {
 
       projectForm.reset();
 
+      setOpen(false);
+
       toast({
         title: toastMessage,
         duration: 2500,
@@ -60,7 +65,7 @@ const CreateProject = (path) => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="flex items-center gap-3 pl-5 pr-8 py-2 bg-[#211935] text-[#F8F8F8] font-semibold rounded-xl">
         <div className="max-sm:hidden w-8 h-8 flex items-center justify-center rounded-full text-[34px] text-[#211935] bg-[#F8F8F8]">
           +
@@ -107,11 +112,9 @@ const CreateProject = (path) => {
                   Cancel
                 </Button>
               </DialogClose>
-              <DialogClose asChild>
                 <Button type="submit" className="btn-primary h-8">
                   Create
                 </Button>
-              </DialogClose>
             </div>
           </form>
         </Form>

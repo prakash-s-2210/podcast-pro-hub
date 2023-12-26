@@ -22,7 +22,7 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 
-const DisplayTab = ({ widgetConfigurationForm, projectId, onFileChange }) => {
+const DisplayTab = ({ userId, widgetConfigurationForm, projectId, onFileChange }) => {
   const handleImage = (e, fieldChange) => {
     e.preventDefault();
 
@@ -340,11 +340,11 @@ const DisplayTab = ({ widgetConfigurationForm, projectId, onFileChange }) => {
       <div>
         <div className="flex justify-end gap-5">
           <Link
-            href={`/projects/${projectId}/widget-configuration?tab=general`}
+            href={`/${userId}/projects/${projectId}/widget-configuration?tab=general`}
             className="flex justify-end"
           >
             <Button
-              type="submit"
+              type="button"
               className="bg-white text-primary border-2 border-primary hover:bg-white px-10 text-[20px]"
             >
               Back

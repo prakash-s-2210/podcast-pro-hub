@@ -3,6 +3,7 @@ import FileTableCard from "./cards/FileTableCard";
 import ProjectCard from "./cards/ProjectCard";
 
 // Forms
+import AccountForm from "./forms/AccountForm";
 import AuthForm from "./forms/AuthForm";
 import CreateProject from "./forms/CreateProject";
 import TranscriptForm from "./forms/TranscriptForm";
@@ -22,6 +23,7 @@ export {
   FileTableCard,
   ProjectCard,
 
+  AccountForm,
   AuthForm,
   CreateProject,
   TranscriptForm,

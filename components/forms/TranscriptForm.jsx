@@ -20,12 +20,11 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { useToast } from "../ui/use-toast";
 
 import { uploadValidation } from "../../lib/validations/projects";
 import { updateFile } from "../../lib/actions/project.actions";
 
-const TranscriptForm = ({ projectId, id, title, description }) => {
+const TranscriptForm = ({ userId, projectId, id, title, description }) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
@@ -45,7 +44,7 @@ const TranscriptForm = ({ projectId, id, title, description }) => {
         fileId: id,
         path: `/projects/${projectId}/upload`,
       });
-      router.push(`/projects/${projectId}/upload`);
+      router.push(`/${userId}/projects/${projectId}/upload`);
       setIsEditing(!isEditing);
     } catch (error) {
       console.log(error.message);
@@ -58,7 +57,7 @@ const TranscriptForm = ({ projectId, id, title, description }) => {
         <h1 className="text-[55px] font-bold text-primary">Edit Transcript</h1>
 
         <Link
-          href={`/projects/${projectId}/upload`}
+          href={`/${userId}/projects/${projectId}/upload`}
           className="flex items-center gap-2 rounded-lg bg-primary text-white px-5 py-2"
         >
           <Image

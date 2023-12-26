@@ -37,11 +37,11 @@ const Auth = () => {
       (async () => {
         try {
           // Fetch user credentials from the server using the clientToken.
-          const serverToken = await fetchUserCredential(clientToken);
+          const userDetail = await fetchUserCredential(clientToken);
           // Check if local storage credentials match backend credentials.
           setIsUserLoggedIn({
-            credential: clientToken === serverToken.credential,
-            userId: serverToken.userId,
+            credential: clientToken === userDetail.credentials,
+            userId: userDetail._id,
           });
         } catch (error) {
           // Handle fetch errors, e.g., log or show an error message.

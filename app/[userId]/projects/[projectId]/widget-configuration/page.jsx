@@ -2,16 +2,16 @@ import {
   Sidebar,
   ProjectNavbar,
   WidgetConfigurationForm,
-} from "../../../../components/index";
+} from "../../../../../components/index";
 
-import { fetchProjectById } from "../../../../lib/actions/project.actions";
+import { fetchProjectById } from "../../../../../lib/actions/project.actions";
 
 const Page = async ({ params, searchParams }) => {
-  const project = await fetchProjectById(params.id);
+  const project = await fetchProjectById(params.projectId);
 
   return (
     <main className="flex">
-      <Sidebar id={project._id} title={project.title} />
+      <Sidebar userId = {params.userId} projectId={project._id} title={project.title} />
 
       <section className="flex-1 flex flex-col gap-14  pb-16">
         <ProjectNavbar title={project.title} />
@@ -20,6 +20,7 @@ const Page = async ({ params, searchParams }) => {
           <h1 className="text-[55px] font-bold text-primary">Configuration</h1>
 
           <WidgetConfigurationForm
+            userId = {params.userId}
             projectId={project._id}
             tab={searchParams.tab}
             widgetConfiguration = {project?.widgetConfiguration}

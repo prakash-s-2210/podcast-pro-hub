@@ -13,7 +13,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-const GeneralTab = ({ widgetConfigurationForm, projectId }) => {
+const GeneralTab = ({ userId, widgetConfigurationForm, projectId }) => {
   return (
     <>
       <FormField
@@ -88,9 +88,9 @@ const GeneralTab = ({ widgetConfigurationForm, projectId }) => {
         )}
       />
 
-      <Link href={`/projects/${projectId}/widget-configuration?tab=display`}  className="flex justify-end">
+      <Link href={`/${userId}/projects/${projectId}/widget-configuration?tab=display`}  className="flex justify-end">
         <Button
-          type="submit"
+          type="button"
           className="bg-primary hover:bg-primary px-10 text-[20px]"
         >
           Next
